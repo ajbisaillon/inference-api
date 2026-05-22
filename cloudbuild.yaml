@@ -1,0 +1,61 @@
+steps:
+  # Step 1: Build the Docker image from your Dockerfile
+  - name: "gcr.io/cloud-builders/docker"
+    id: "Build Image"
+    args:
+      [
+        "build",
+        "-t",
+        "$_AR_REGION-docker.pkg.dev/$PROJECT_ID/$_AR_REPOSITORY/$_IMAGE_NAME:$COMMIT_SHA",
+        ".",
+      ]
+
+  # Step 2: Run pytest using the freshly built Docker image
+  # This guarantees your tests pass in the exact environment going to production
+  - name: "gcr.io/cloud-builders/docker"
+    id: "Run Tests"
+    args:
+      [
+        "run",
+        "$_AR_REGION-docker.pkg.dev/$PROJECT_ID/$_AR_REPOSITORY/$_IMAGE_NAME:$COMMIT_SHA",
+        "pytest",
+      ]
+
+  # Step 3: Push the validated image to Google Artifact Registry
+  # Cloud Build will only reach this step if 'Run Tests' succeeds (exits with 0)
+  - name: "gcr.io/cloud-builders/docker"
+    id: "Push Image"
+    args:
+      [
+        "push",
+        "$_AR_REGION-docker.pkg.dev/$PROJECT_ID/$_AR_REPOSITORY/$_IMAGE_NAME:$COMMIT_SHA",
+      ]
+
+  # Step 4: Deploy the container image to Google Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "Deploy to Cloud Run"
+    entrypoint: "gcloud"
+    args:
+      [
+        "run",
+        "deploy",
+        "$_SERVICE_NAME",
+        "--image",
+        "$_AR_REGION-docker.pkg.dev/$PROJECT_ID/$_AR_REPOSITORY/$_IMAGE_NAME:$COMMIT_SHA",
+        "--region",
+        "$_RUN_REGION",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated",
+      ]
+
+# Substitutions allow you to parametrize your builds or set default values
+substitutions:
+  _AR_REGION: "us-east4"
+  _RUN_REGION: "us-east4"
+  _AR_REPOSITORY: "week1-repo"
+  _IMAGE_NAME: "inference-api"
+  _SERVICE_NAME: "credit-card-default-prediction"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
