@@ -48,7 +48,7 @@ steps:
         "$_RUN_REGION",
         "--platform",
         "managed",
-        "--allow-unauthenticated",
+        "--no-allow-unauthenticated",
       ]
 
 # Substitutions allow you to parametrize your builds or set default values
