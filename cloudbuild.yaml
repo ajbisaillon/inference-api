@@ -10,16 +10,18 @@ steps:
         ".",
       ]
 
-  # Step 2: Run pytest using the freshly built Docker image
-  # This guarantees your tests pass in the exact environment going to production
-  - name: "gcr.io/cloud-builders/docker"
-    id: "Run Tests"
-    args:
-      [
-        "run",
-        "$_AR_REGION-docker.pkg.dev/$PROJECT_ID/$_AR_REPOSITORY/$_IMAGE_NAME:$COMMIT_SHA",
-        "pytest",
-      ]
+# Step 2: Run pytest inside the built container environment
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Run Tests'
+    # We add an 'env' array here to replicate your local runtime state
+    env:
+      - 'PYTHONPATH=.'
+    args: [
+      'run', 
+      '-e', 'PYTHONPATH=.', # Pass it inside the container instance runtime too
+      '$_AR_REGION-docker.pkg.dev/$PROJECT_ID/$_AR_REPOSITORY/$_IMAGE_NAME:$COMMIT_SHA', 
+      'pytest'
+    ]
 
   # Step 3: Push the validated image to Google Artifact Registry
   # Cloud Build will only reach this step if 'Run Tests' succeeds (exits with 0)

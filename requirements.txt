@@ -6,10 +6,14 @@ annotated-types==0.7.0
     # via pydantic
 anyio==4.13.0
     # via
+    #   httpx
     #   starlette
     #   watchfiles
 certifi==2026.5.20
-    # via requests
+    # via
+    #   httpcore
+    #   httpx
+    #   requests
 cffi==2.0.0
     # via cryptography
 charset-normalizer==3.4.7
@@ -48,12 +52,19 @@ grpcio==1.80.0
 grpcio-status==1.80.0
     # via google-api-core
 h11==0.16.0
-    # via uvicorn
+    # via
+    #   httpcore
+    #   uvicorn
+httpcore==1.0.9
+    # via httpx
 httptools==0.7.1
     # via uvicorn
+httpx==0.28.1
+    # via -r requirements.in
 idna==3.16
     # via
     #   anyio
+    #   httpx
     #   requests
 iniconfig==2.3.0
     # via pytest
