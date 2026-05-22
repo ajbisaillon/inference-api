@@ -1,0 +1,83 @@
+# ==============================================================================
+# macOS Specific Files
+# ==============================================================================
+.DS_Store
+
+
+# ==============================================================================
+# Python Specific Files
+# ==============================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging artifacts
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+
+# ==============================================================================
+# Environments & Virtual Ecosystems
+# ==============================================================================
+# Standard Python environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+
+# ==============================================================================
+# Testing, Coverage, and Linters
+# ==============================================================================
+htmlcov/
+.toml
+.cache
+.pytest_cache/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+
+# ==============================================================================
+# IDEs and Text Editors
+# ==============================================================================
+# VS Code
+.vscode/
+
+# PyCharm / IntelliJ IDEA
+.idea/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
